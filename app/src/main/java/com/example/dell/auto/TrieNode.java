@@ -1,5 +1,6 @@
 package com.example.dell.auto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -10,15 +11,17 @@ public class TrieNode {
 
     private HashMap<Character,TrieNode> children;
     private boolean isWord;
-    private long freq;
+    private Long freq;
+    private String suggested_str;
 
     public TrieNode(){
         children = new HashMap<>();
+        suggested_str = "";
         isWord = false;
-        freq = 0;
+        freq = new Long(0);
     }
 
-    public void addWord(String new_word, long freq){
+    public void addWord(String new_word, Long freq){
         int len = new_word.length();
         TrieNode curr = this;
 
@@ -35,6 +38,33 @@ public class TrieNode {
         curr.freq += freq;
 
         }
+    }
 
+    public ArrayList<HashMap<String,Long>> getPossibleWords(String prefix){
+
+        ArrayList<HashMap<String,Long>> result = new ArrayList<>();
+
+        String valid_word = "";
+        TrieNode curr_node = this;
+        int len = prefix.length();
+
+        for(int i=0;i<len;i++) {
+            Character curr_key = new Character(prefix.charAt(i));
+            if (curr_node.children.containsKey(curr_key)){
+                curr_node = curr_node.children.get(curr_key);
+                valid_word += curr_key.toString();
+
+            }
+            else
+                return result;
+        }
+
+
+        return result;
+    }
+
+    public ArrayList<HashMap<String,Long>>  getSuggestions(){
+
+        return null;
     }
 }
