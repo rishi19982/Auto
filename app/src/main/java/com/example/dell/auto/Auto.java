@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Auto extends AppCompatActivity {
     TrieNode tree=new TrieNode();
@@ -43,10 +45,21 @@ public class Auto extends AppCompatActivity {
         ArrayList<WordClass> Ans=new ArrayList<>();
         Ans=tree.getPossibleWords("th");
         if(Ans !=null) {
-            for (int k = 0; k < Ans.size(); k++) {
-                Log.d("Rishabh", Ans.get(k).string +" " +Ans.get(k).freq.toString());
+            Collections.sort(Ans, new Comparator<WordClass>() {
+                @Override
+                public int compare(WordClass wordClass, WordClass t1) {
+
+                    return wordClass.freq.compareTo(t1.freq)*-1;
+                }
+            });
+            int print_size = Ans.size();
+
+            if (print_size > 5)
+                print_size = 5;
+
+            for (int k = 0; k < print_size; k++) {
+                Log.d("Rishabh", Ans.get(k).string + " " + Ans.get(k).freq.toString());
             }
         }
-
     }
 }
