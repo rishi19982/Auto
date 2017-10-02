@@ -1,5 +1,7 @@
 package com.example.dell.auto;
 
+import android.util.Log;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,26 +31,27 @@ public class TrieNode {
         int len = new_word.length();
         TrieNode curr = this;
 
-        for(int i=0;i<len;i++){
+        for(int i=0;i<len;i++) {
             Character curr_key = new Character(new_word.charAt(i));
-            if(curr.children.containsKey(curr_key))
+            if (curr.children.containsKey(curr_key))
                 curr = curr.children.get(curr_key);
-            else{
+            else {
                 TrieNode new_node = new TrieNode();
-                curr.children.put(curr_key,new_node);
+                curr.children.put(curr_key, new_node);
+                curr = new_node;
             }
-
-        curr.isWord = true;
-        curr.freq += freq;
-
         }
+        Log.d("Risabh",new_word+"true");
+        curr.isWord = true;
+        curr.freq = freq;
+
     }
 
     public ArrayList<WordClass> getPossibleWords(String prefix){
 
         ArrayList<WordClass> result = new ArrayList<>();
 
-        String valid_word = "";
+        //String valid_word = "";
         TrieNode curr_node = this;
         int len = prefix.length();
 
@@ -56,7 +59,6 @@ public class TrieNode {
             Character curr_key = new Character(prefix.charAt(i));
             if (curr_node.children.containsKey(curr_key)){
                 curr_node = curr_node.children.get(curr_key);
-                valid_word += curr_key.toString();
 
             }
             else
@@ -78,17 +80,25 @@ public class TrieNode {
         if(key_set.length > 0){
             int total_keys = key_set.length;
 
+            if(this.isWord) {
+                new_list.add(new WordClass("", this.freq));
+                //Log.d("Rishabh",this.children.get())
+            }
+
             for(int i=0;i<total_keys;i++) {
+
                 ArrayList<WordClass> child_list = this.children.get(key_set[i]).getSuggestions();
                 for(int j=0;j<child_list.size();j++)
-                    child_list.get(j).insertBeg(key_set[j]);
+                    child_list.get(j).insertBeg(key_set[i]);
 
                 new_list.addAll(child_list);
             }
 
             return new_list;
         }
-        new_list.add(new WordClass("",this.freq));
-        return new_list;
+        else {
+            new_list.add(new WordClass("", this.freq));
+            return new_list;
+        }
     }
 }

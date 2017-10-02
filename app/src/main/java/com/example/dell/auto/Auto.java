@@ -44,7 +44,7 @@ public class Auto extends AppCompatActivity {
         Ans=tree.getPossibleWords("th");
         if(Ans !=null) {
             for (int k = 0; k < Ans.size(); k++) {
-                Log.d("Rishabh", Ans.get(k).string);
+                Log.d("Rishabh", Ans.get(k).string +" " +Ans.get(k).freq.toString());
             }
         }
 
