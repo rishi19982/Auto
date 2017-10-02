@@ -6,27 +6,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.dell.auto.Auto">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!!"
+        android:id="@+id/Welcome"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:inputType="text"
+        android:layout_below="@+id/Welcome"
+        android:minEms="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.152"
         app:layout_constraintVertical_bias="0.097"
-        android:id="@+id/textView" />
+        android:id="@+id/text" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="200dp"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="false"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="66dp"
-        android:spinnerMode="dialog" />
-
+        android:layout_below="@+id/Welcome"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="100dp"
+        android:minEms="10"
+        android:id="@+id/Text1"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Text1"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="100dp"
+        android:minEms="10"
+        android:id="@+id/Text2"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Text2"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="100dp"
+        android:minEms="10"
+        android:id="@+id/Text3"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Text3"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="100dp"
+        android:minEms="10"
+        android:id="@+id/Text4"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Text4"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="100dp"
+        android:minEms="10"
+        android:id="@+id/Text5"
+        />
 </RelativeLayout>
