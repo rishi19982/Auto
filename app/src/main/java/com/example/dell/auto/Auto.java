@@ -24,17 +24,16 @@ public class Auto extends AppCompatActivity {
             BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
             String line = null;
             while((line = in.readLine()) != null) {
+                //Log.d("LINE:",line);
                 String word = line.trim();
-
+                Log.d("WORD:",word);
                 String[] s=word.split("\\s");
-
-                    tree.addWord(s[0], Long.valueOf(s[1]));
-                    Log.d("Rishabh",Long.valueOf(s[1])+"");
-                    Log.d("Rishabh",s[0]+"|"+s[1]);
-
-
+                for(String k :s)
+                    Log.d("SPLIT",k);
+                tree.addWord(s[0], Long.valueOf(s[1]));
+                //    Log.d("Rishabh",Long.valueOf(s[1])+"");
+                //    Log.d("Rishabh",s[0]+"|"+s[1]);
                   //  Log.d("Rishabh","Failed");
-
             }
         } catch (IOException e) {
             Toast toast = Toast.makeText(this, "Could not load dictionary", Toast.LENGTH_LONG);
@@ -43,9 +42,10 @@ public class Auto extends AppCompatActivity {
         }
         ArrayList<WordClass> Ans=new ArrayList<>();
         Ans=tree.getPossibleWords("th");
-        for(int k=0;k<Ans.size();k++)
-        {
-            Log.d("Rishabh",Ans.get(k).string);
+        if(Ans !=null) {
+            for (int k = 0; k < Ans.size(); k++) {
+                Log.d("Rishabh", Ans.get(k).string);
+            }
         }
 
     }

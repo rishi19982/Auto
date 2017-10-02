@@ -2,7 +2,9 @@ package com.example.dell.auto;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -68,7 +70,9 @@ public class TrieNode {
     }
 
     public ArrayList<WordClass>  getSuggestions(){
-        Character[] key_set = (Character[])this.children.keySet().toArray();
+
+       Object temp[]=this.children.keySet().toArray();
+        Character[] key_set = Arrays.copyOf(temp,temp.length,Character[].class);
         ArrayList<WordClass> new_list= new ArrayList<>();
 
         if(key_set.length > 0){
