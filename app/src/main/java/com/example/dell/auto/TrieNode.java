@@ -1,7 +1,9 @@
 package com.example.dell.auto;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by coldball on 2/10/17.
@@ -40,9 +42,9 @@ public class TrieNode {
         }
     }
 
-    public ArrayList<HashMap<String,Long>> getPossibleWords(String prefix){
+    public ArrayList<WordClass> getPossibleWords(String prefix){
 
-        ArrayList<HashMap<String,Long>> result = new ArrayList<>();
+        ArrayList<WordClass> result = new ArrayList<>();
 
         String valid_word = "";
         TrieNode curr_node = this;
@@ -56,15 +58,33 @@ public class TrieNode {
 
             }
             else
-                return result;
+                return null;
         }
-
+        result = curr_node.getSuggestions();
+        for(int j=0;j<result.size();j++)
+            result.get(j).insertBeg(prefix);
 
         return result;
     }
 
-    public ArrayList<HashMap<String,Long>>  getSuggestions(){
+    public ArrayList<WordClass>  getSuggestions(){
+        Character[] key_set = (Character[])this.children.keySet().toArray();
+        ArrayList<WordClass> new_list= new ArrayList<>();
 
-        return null;
+        if(key_set.length > 0){
+            int total_keys = key_set.length;
+
+            for(int i=0;i<total_keys;i++) {
+                ArrayList<WordClass> child_list = this.children.get(key_set[i]).getSuggestions();
+                for(int j=0;j<child_list.size();j++)
+                    child_list.get(j).insertBeg(key_set[j]);
+
+                new_list.addAll(child_list);
+            }
+
+            return new_list;
+        }
+        new_list.add(new WordClass("",this.freq));
+        return new_list;
     }
 }
