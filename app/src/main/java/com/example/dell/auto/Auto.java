@@ -22,13 +22,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Stack;
 
 public class Auto extends AppCompatActivity {
     TrieNode tree=new TrieNode();
    // private TextView final_text=(TextView)findViewById(R.id.Welcome);
     private String e_text;
-    private Stack<MemoryState> state_stack;
     private TextView edit_text;
     private TextView final_text;
     private TextView[] textView_arr;
@@ -38,8 +36,6 @@ public class Auto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto);
-
-        state_stack = new Stack<>();
 
         final_text = (TextView)findViewById(R.id.Welcome);
 
@@ -92,10 +88,7 @@ public class Auto extends AppCompatActivity {
         if(Keycode == KeyEvent.KEYCODE_SPACE || Keycode == KeyEvent.KEYCODE_ENTER ) {
 
             char ws = (char) event.getUnicodeChar();
-            state_stack.push(new MemoryState(final_text.getText().toString(),edit_text.getText().toString()));
-
-            String new_txt = final_text.getText().toString() + edit_text.getText().toString() + String.valueOf(ws);
-            final_text.setText(new_txt);
+            final_text.setText(final_text.getText().toString() + edit_text.getText().toString() + String.valueOf(ws));
             edit_text.setText("");
             for (int i=0;i<5;i++)
             {
@@ -140,9 +133,9 @@ public class Auto extends AppCompatActivity {
             }
 
         }
-       //else {
+       else {
 
-            /*String input=edit_text.getText().toString();
+            String input=edit_text.getText().toString();
             input += (char)event.getUnicodeChar();
             edit_text.setText(input);
             Ans=tree.getPossibleWords(input);
@@ -164,26 +157,21 @@ public class Auto extends AppCompatActivity {
                 }
 
 
-            }*/
+            }
             else{
-                if(!state_stack.empty()) {
-                    MemoryState prev_state = state_stack.pop();
-                    final_text.setText(prev_state.final_string);
-                    edit_text.setText(prev_state.editing_string);
-                }
                 for (int i=0;i<5;i++)
                 {
                     textView_arr[i].setText("");
                 }
             }
-        //}
+        }
        // final_text.setText("Hello");
         return super.onKeyUp(Keycode,event);
     }
 
     public void setText(View view){
         TextView selected_view = (TextView)view;
-        state_stack.push(new MemoryState(final_text.getText().toString(),selected_view.getText().toString()));
+
         final_text.setText(final_text.getText().toString() + selected_view.getText().toString() +" ");
         edit_text.setText("");
 
