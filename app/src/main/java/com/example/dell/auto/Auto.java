@@ -22,15 +22,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Stack;
 
 public class Auto extends AppCompatActivity {
     TrieNode tree=new TrieNode();
    // private TextView final_text=(TextView)findViewById(R.id.Welcome);
     private String e_text;
+    private String p_text;
+
     private TextView edit_text;
     private TextView final_text;
     private TextView[] textView_arr;
     private Button keyboard_button;
+    private Stack <MemoryState> text_state;
     private ArrayList<WordClass> Ans=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,11 @@ public class Auto extends AppCompatActivity {
         final_text = (TextView)findViewById(R.id.Welcome);
 
         edit_text=(TextView) findViewById(R.id.text);
+
         e_text = new String();
+        p_text = new String();
+
+        text_state = new Stack<>();
 
         keyboard_button = (Button)findViewById(R.id.KeyboardButton);
         keyboard_button.setOnClickListener(new View.OnClickListener() {
@@ -88,8 +96,15 @@ public class Auto extends AppCompatActivity {
         if(Keycode == KeyEvent.KEYCODE_SPACE || Keycode == KeyEvent.KEYCODE_ENTER ) {
 
             char ws = (char) event.getUnicodeChar();
-            final_text.setText(final_text.getText().toString() + edit_text.getText().toString() + String.valueOf(ws));
-            edit_text.setText("");
+            String curr_state = p_text;
+
+            text_state.push(new MemoryState(p_text,e_text));
+            final_text.setText(p_text + e_text + String.valueOf(ws));
+
+            p_text += (e_text + String.valueOf(ws));
+            e_text = "";
+
+            //edit_text.setText("");
             for (int i=0;i<5;i++)
             {
                 textView_arr[i].setText("");
@@ -98,13 +113,14 @@ public class Auto extends AppCompatActivity {
         }
 
         else if(Keycode == KeyEvent.KEYCODE_DEL){
-            String curr_txt = edit_text.getText().toString();
 
-            if(curr_txt != null && curr_txt.length() > 0) {
-                curr_txt = curr_txt.substring(0, curr_txt.length() - 1);
-                edit_text.setText(curr_txt);
 
-                Ans=tree.getPossibleWords(curr_txt);
+            if(e_text != null && e_text.length() > 0) {
+                e_text = e_text.substring(0, e_text.length() - 1);
+                final_text.setText(p_text + e_text);
+                //edit_text.setText(e_text);
+
+                Ans=tree.getPossibleWords(e_text);
                 if(Ans !=null) {
                     Collections.sort(Ans, new Comparator<WordClass>() {
                         @Override
@@ -125,9 +141,46 @@ public class Auto extends AppCompatActivity {
 
                 }
                 else{
-                    for (int i=0;i<5;i++)
-                    {
-                        textView_arr[i].setText("");
+
+                        for (int i=0;i<5;i++)
+                        {
+                            textView_arr[i].setText("");
+                        }
+                }
+            }
+            else
+            {
+                if(!text_state.empty()) {
+                    MemoryState prev_state = text_state.pop();
+                    final_text.setText(prev_state.final_string + prev_state.editing_string);
+                    e_text = prev_state.editing_string;
+                    p_text = prev_state.final_string;
+
+                    Ans=tree.getPossibleWords(e_text);
+                    if(Ans !=null) {
+                        Collections.sort(Ans, new Comparator<WordClass>() {
+                            @Override
+                            public int compare(WordClass wordClass, WordClass t1) {
+
+                                return wordClass.freq.compareTo(t1.freq)*-1;
+                            }
+                        });
+                        int print_size = Ans.size();
+                        for (int i=0;i<5;i++)
+                        {
+                            if(i<Ans.size())
+                                textView_arr[i].setText(Ans.get(i).string);
+                            else
+                                textView_arr[i].setText("");
+                        }
+
+
+                    }
+                    else {
+
+                        for (int i = 0; i < 5; i++) {
+                            textView_arr[i].setText("");
+                        }
                     }
                 }
             }
@@ -135,10 +188,11 @@ public class Auto extends AppCompatActivity {
         }
        else {
 
-            String input=edit_text.getText().toString();
-            input += (char)event.getUnicodeChar();
-            edit_text.setText(input);
-            Ans=tree.getPossibleWords(input);
+            //String input=edit_text.getText().toString();
+            e_text += String.valueOf((char)event.getUnicodeChar());
+            //edit_text.setText(input);
+            final_text.setText(p_text + e_text);
+            Ans=tree.getPossibleWords(e_text);
             if(Ans !=null) {
                 Collections.sort(Ans, new Comparator<WordClass>() {
                     @Override
@@ -172,8 +226,16 @@ public class Auto extends AppCompatActivity {
     public void setText(View view){
         TextView selected_view = (TextView)view;
 
-        final_text.setText(final_text.getText().toString() + selected_view.getText().toString() +" ");
-        edit_text.setText("");
+        String curr_state = p_text;
+        String select_txt = selected_view.getText().toString();
+
+        text_state.push(new MemoryState(curr_state,select_txt));
+
+        final_text.setText( curr_state + select_txt + " " );
+
+        p_text += select_txt;
+        e_text = "";
+        //edit_text.setText("");
 
         for (int i=0;i<5;i++)
         {
